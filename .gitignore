@@ -1,0 +1,6 @@
+data/raw/
+data/designs.csv
+reference/
+__pycache__/
+*.pyc
+.venv/

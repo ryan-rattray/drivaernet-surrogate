@@ -1,0 +1,17 @@
+Parameters file: data/raw/DrivAerNet_ParametricData.csv
+  rows:  4165
+  columns:  ['Experiment', 'B_Ramp_Angle', 'B_Diffusor_Angle', 'B_Trunklid_Angle', 'C_Side_Mirrors_Rotation', 'D_Rear_Window_Inclination', 'D_Winscreen_Inclination', 'C_Side_Mirrors_Translate_X', 'C_Side_Mirrors_Translate_Z', 'D_Winscreen_Length', 'D_Rear_Window_Length', 'E_A_B_C_Pillar_Thickness', 'G_Trunklid_Curvature', 'G_Trunklid_Length', 'H_Front_Bumper_Curvature', 'H_Front_Bumper_Length', 'F_Door_Handles_Thickness', 'F_Door_Handles_Z_Position', 'E_Fenders_Arch_Offset', 'A_Car_Length', 'F_Door_Handles_X_Position', 'A_Car_Width', 'A_Car_Roof_Height', 'A_Car_Green_House_Angle', 'Average Cd', 'Std Cd', 'Average Cl', 'Std Cl', 'Average Cl_f', 'Std Cl_f', 'Average Cl_r', 'Std Cl_r']
+Drag file:  data/raw/DrivAerNetPlusPlus_Cd_8k_Updated.csv
+  rows:  8121
+  columns:  ['ID', 'Drag_Value']
+
+Design IDs in both files:  4165
+Design IDs only in parameters file:  0
+Design IDs only in the drag file:  3956
+
+Merged designs:  4165
+Parameter columns:  31
+Cd min:  0.1998517627541528
+Cd max:  0.3198101698903654
+Cd mean:  0.2537903172799725
+Missing Cd values:  0
