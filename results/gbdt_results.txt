@@ -1,0 +1,8 @@
+contender: gradient boosting (LightGBM LGBMRegressor)
+library: LightGBM LGBMRegressor
+train_rows: 3051
+test_rows: 559
+train_r2: 0.9123343713333352
+val_r2: 0.6356559013459231
+test_r2: 0.6469315066768254
+config: learning_rate=0.05, n_estimators<=500, num_leaves=default, early_stopping=validation split (50 rounds), seed=42
