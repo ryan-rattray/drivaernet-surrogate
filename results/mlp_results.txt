@@ -1,0 +1,9 @@
+contender: PyTorch MLP (hand-built)
+architecture: 23 -> 128 -> 64 -> 1, ReLU
+epochs: 100
+train_rows: 3051
+val_rows: 555
+test_rows: 559
+train_r2: 0.811007961730985
+val_r2: 0.3193305738393898
+test_r2: 0.3261186673662487
