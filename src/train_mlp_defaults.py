@@ -1,5 +1,8 @@
-# src/train_mlp.py — the hand-built PyTorch MLP.
+# src/train_mlp_defaults.py — the hand-built PyTorch MLP.
 # Data arrives through src/common.py
+# Scores train and validation only. The test read is deferred to the
+# decision comparison at the Flight 2 boundary: this script never
+# predicts the test rows.
 
 import numpy as np
 import torch
@@ -23,8 +26,6 @@ X_train = scaler.transform(train_df[FEATURES]).astype("float32")
 y_train = train_df[CD_COL].to_numpy(dtype="float32").reshape(-1, 1)
 X_val = scaler.transform(val_df[FEATURES]).astype("float32")
 y_val = val_df[CD_COL].to_numpy(dtype="float32").reshape(-1, 1)
-X_test = scaler.transform(test_df[FEATURES]).astype("float32")
-y_test = test_df[CD_COL].to_numpy(dtype="float32").reshape(-1, 1)
 
 print("Scaled train means (expect ~0):", np.round(X_train.mean(axis=0), 3))
 print("Scaled train stds  (expect ~1):", np.round(X_train.std(axis=0), 3))
@@ -51,7 +52,6 @@ class CdDataset(Dataset):
 
 train_ds = CdDataset(X_train, y_train)
 val_ds = CdDataset(X_val, y_val)
-test_ds = CdDataset(X_test, y_test)
 
 print("Train designs:", len(train_ds))
 x0, y0 = train_ds[0]
@@ -64,7 +64,6 @@ BATCH_SIZE = 64
 
 train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True)
 val_loader = DataLoader(val_ds, batch_size=BATCH_SIZE, shuffle=False)
-test_loader = DataLoader(test_ds, batch_size=BATCH_SIZE, shuffle=False)
 
 # One batch, fetched and read:
 xb, yb = next(iter(train_loader))
@@ -146,15 +145,13 @@ def predict_array(X):
 
 train_r2 = r2_from_definition(y_train, predict_array(X_train))
 val_r2 = r2_from_definition(y_val, predict_array(X_val))
-test_r2 = r2_from_definition(y_test, predict_array(X_test))
 print(f"Train R²: {train_r2}")
 print(f"Validation R²: {val_r2}")
-print(f"Test R²: {test_r2}")
 
-# Cross-check: the library's one-liner on the same test numbers must agree.
+# Cross-check: the library's one-liner on the same validation numbers must agree.
 from sklearn.metrics import r2_score
 
-print(f"sklearn cross-check: {r2_score(y_test, predict_array(X_test))}")
+print(f"sklearn cross-check: {r2_score(y_val, predict_array(X_val))}")
 
 lines = [
     "contender: PyTorch MLP (hand-built)",
@@ -165,12 +162,12 @@ lines = [
     f"test_rows: {len(test_df)}",
     f"train_r2: {train_r2}",
     f"val_r2: {val_r2}",
-    f"test_r2: {test_r2}",
 ]
 with open("results/mlp_results.txt", "w") as f:
     f.write("\n".join(lines) + "\n")
 
 print("Wrote results/mlp_results.txt")
+
 
 
 

@@ -1,6 +1,8 @@
-# src/train_gbdt.py — the gradient-boosting baseline (LightGBM).
-# Loads Stair 1's frozen split, trains once, scores the test rows once,
-# and writes the score to results/gbdt_results.txt.
+# src/train_gbdt_defaults.py — the gradient-boosting baseline (LightGBM).
+# Loads Stair 1's frozen split, trains once on the stated defaults, and
+# scores train and validation only. The test read is deferred to the
+# decision comparison at the Flight 2 boundary: this script never
+# predicts the test rows.
 # Run from the repo root, with the project venv active.
 
 from common import load_frames, FEATURES, CD_COL
@@ -19,11 +21,9 @@ N_TREES_CEILING = 500
 EARLY_STOPPING_ROUNDS = 50
 SEED = 42
 
-# Define training and test
+# Define training arrays
 X_train = train_df[FEATURES]
 y_train = train_df[CD_COL]
-X_test = test_df[FEATURES]
-y_test = test_df[CD_COL]
 
 # Initiate model
 model = LGBMRegressor(
@@ -55,15 +55,8 @@ train_r2 = r2_score(y_train, model.predict(X_train))
 # --- val prediction and scoring ------------------------------------------
 val_r2 = r2_score(val_df[CD_COL], model.predict(val_df[FEATURES]))
 
-# --- Test prediction and scoring ------------------------------------------
-test_pred = model.predict(X_test)
-test_r2 = r2_score(y_test, test_pred)
-
-
-
 print(f"Train R²: {train_r2}")
 print(f"Val R²: {val_r2}")
-print(f"Test R²:  {test_r2}")
 
 # --- Write the results file -------------------------------------------------------
 lines = [
@@ -73,7 +66,6 @@ lines = [
     f"test_rows: {len(test_df)}",
     f"train_r2: {train_r2}",
     f"val_r2: {val_r2}",
-    f"test_r2: {test_r2}",
     f"config: {CONFIG}",
 ]
 with open("results/gbdt_results.txt", "w") as f:

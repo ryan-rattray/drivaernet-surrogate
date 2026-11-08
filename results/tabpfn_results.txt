@@ -1,0 +1,7 @@
+contender: TabPFN (in context, no training)
+run_route: kaggle gpu
+train_rows: 3051
+val_rows: 555
+test_rows: 559
+val_r2: 0.8123367964963065
+test_r2: 0.8185785487036595
