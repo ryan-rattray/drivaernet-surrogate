@@ -11,12 +11,12 @@ print(f"Features ({len(FEATURES)}): {FEATURES}")
 print(f"train: {len(train_df)}  val: {len(val_df)}  test: {len(test_df)}")
 
 # No preprocessing.  TabPFN does its own preprocessing
-X_train = train_df[FEATURES].to_numpy
-y_train = train_df[CD_COL].to_numpy
-X_val = val_df[FEATURES].to_numpy
-y_val = val_df[CD_COL].to_numpy
-X_test = test_df[FEATURES].to_numpy
-y_test = test_df[CD_COL].to_numpy
+X_train = train_df[FEATURES].to_numpy()
+y_train = train_df[CD_COL].to_numpy()
+X_val = val_df[FEATURES].to_numpy()
+y_val = val_df[CD_COL].to_numpy()
+X_test = test_df[FEATURES].to_numpy()
+y_test = test_df[CD_COL].to_numpy()
 
 # --- The model: defaults only, because there is nothing to tune ---------------------
 from tabpfn import TabPFNRegressor
