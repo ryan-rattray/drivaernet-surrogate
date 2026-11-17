@@ -1,0 +1,28 @@
+F_D_WM_WW_1.zip: 500 STLs, 0 of them in the split
+
+Archives checked: 1
+Total STLs in archives: 500
+Split designs present: 0
+Split designs missing: 4165
+
+Missing design IDs (first 20):
+E_S_WWC_WM_10
+E_S_WWC_WM_100
+E_S_WWC_WM_101
+E_S_WWC_WM_102
+E_S_WWC_WM_103
+E_S_WWC_WM_104
+E_S_WWC_WM_105
+E_S_WWC_WM_106
+E_S_WWC_WM_107
+E_S_WWC_WM_108
+E_S_WWC_WM_109
+E_S_WWC_WM_11
+E_S_WWC_WM_110
+E_S_WWC_WM_111
+E_S_WWC_WM_112
+E_S_WWC_WM_113
+E_S_WWC_WM_114
+E_S_WWC_WM_115
+E_S_WWC_WM_116
+E_S_WWC_WM_117
