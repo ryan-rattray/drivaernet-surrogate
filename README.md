@@ -18,7 +18,8 @@ each with its own done criteria. This allows me to do cool things like play with
 - **Flight 1:  The tabular surrogate (complete 11-8-2026).** Predict Cd from the design parameters with traditional ML and a tabular foundation model.  R² of predicted values vs ground truth is the chosen metric.
 
 - **Flight 2: The geometric surrogate (in process.)**
-A graph neural network built from scratch on the car meshes, predicting Cd from geometry alone on the same split, compared against a pretrained 3D backbone adapted to the task.
+-   A graph neural network built from scratch on the car meshes, predicting Cd from geometry alone on the same split, compared against a pretrained 3D backbone adapted to the task.
+-   Stair 1 (the data) is complete: the mesh archives holding the split designs are downloaded, an inventory script verifies all 4,165 split designs are present in them, and the first car has been sampled into a 5,000-point cloud.
 
 - **Flight 3: Serve it (planned).** One of the surrogates behind a small API, containerized, so the repo can be cloned and run with one command.
 
@@ -66,6 +67,13 @@ design, with the categorical choices carried in the design ID string rather
 than in extra columns. Drag coefficient (Cd) ranges from 0.200 to 0.320.
 This repository distributes no dataset files; the data must be obtained
 from the original sources.
+
+The 3D meshes come from the companion Harvard Dataverse dataset,
+"DrivAerNet++: 3D Meshes," delivered through Globus. The authors'
+split contains only smooth-underbody designs, so only seven of the
+fifteen archives hold split designs (about 360 GB). The meshes live
+on a local drive and are not distributed here; sampled point clouds
+under data/points/ are gitignored.
 
 Original project and dataset: [DrivAerNet++ official repository](https://github.com/Mohamedelrefaie/DrivAerNet)
 
@@ -127,12 +135,22 @@ drivaernet-surrogate/
 ├── requirements.txt       (the pinned environment; see Setup)
 ├── data/
 │   ├── designs.csv          (not distributed; see The Data)
-│   └── split.csv            (the authors' published train/val/test split)
+│   ├── split.csv            (the authors' published train/val/test split)
+│   └── points/              (sampled point clouds; gitignored, built by sample_one.py)
 ├── results/
 │   ├── comparison.md        (the comparison table, built by compare_results.py)
 │   ├── data_check.txt
+│   ├── first_car_points.png (the first split car as a 5,000-point cloud)
 │   ├── gbdt_results.txt
+│   ├── mesh_inventory.txt   (which split designs the mesh archives hold)
 │   ├── mlp_results.txt
+│   ├── render_full_surface.png
+│   ├── render_grid.png      (one car at every point count, plus the full mesh)
+│   ├── render_mirror_zoom.png
+│   ├── render_points_2.5k.png
+│   ├── render_points_5k.png
+│   ├── render_points_10k.png
+│   ├── render_points_20k.png
 │   └── tabpfn_results.txt
 ├── src/
 │   ├── common.py                  (shared loading: the 23 features, the split, the leak guard)
@@ -141,7 +159,11 @@ drivaernet-surrogate/
 │   ├── train_gbdt_defaults.py     (LightGBM at default settings; validation only)
 │   ├── train_mlp_defaults.py      (hand-built PyTorch MLP at defaults; validation only)
 │   ├── run_tabpfn.py              (TabPFN — runs on Kaggle, not in the local venv)
-│   └── compare_results.py         (builds results/comparison.md from the results files)
+│   ├── compare_results.py         (builds results/comparison.md from the results files)
+│   ├── check_mesh_download.py     (inventories the mesh archives against the split)
+│   ├── sample_one.py              (samples one split car's STL into a 5,000-point cloud, plus a picture)
+│   ├── sample_rehearsal.py        (throwaway rehearsal of the sampling mechanism on a non-split car)
+│   └── render_ladder.py           (renders one car at several point counts, side by side)
 └── tests/
     └── test_split_integrity.py    (split counts, disjointness, and the results-file rules)
 ```
@@ -159,6 +181,8 @@ stair order:
 - `src/run_tabpfn.py` — TabPFN; runs on Kaggle, not in the local venv (the Pylance "tabpfn could not be resolved" warning locally is expected)
 - `python src/compare_results.py` — build `results/comparison.md` from the results files
 - `python -m pytest` — split integrity and results-file rules (3 tests)
+- `python src/check_mesh_download.py` — inventory the mesh archives against the split; writes results/mesh_inventory.txt
+- `python src/sample_one.py` — sample one split car into data/points/ and render results/first_car_points.png
 
 
 ## Ground Rules
